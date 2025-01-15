@@ -1,13 +1,23 @@
 import { View, StyleSheet, FlatList, Text, TouchableOpacity } from "react-native";
 import { students } from "./StudentsDb"
 import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native-paper";
+import { useState } from "react";
+import React  from "react";
 
-export default function StudentList() {
+export default function StudentList({route}) {
     const navigation = useNavigation();
+    const [mystudents,setStudents] = useState(students);
+    React.useEffect(()=>{
+        if(route.params?.newStudent){
+            const { newStudent } = route.params;
+            setStudents((prev)=>[...prev,{...newStudent}]);
+        }
+    }, [route.params?.newStudent]);
     return (
         <View style={styles.container}>
             <FlatList
-                data={students}
+                data={mystudents}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) =>
                     <TouchableOpacity onPress={()=>navigation.navigate("Profile",{student:item})}>
@@ -15,7 +25,7 @@ export default function StudentList() {
                     </TouchableOpacity>
                 }
             />
-
+            <Button onPress={()=>navigation.navigate('Add')}>Add New Student</Button>
         </View>
     )
 }
