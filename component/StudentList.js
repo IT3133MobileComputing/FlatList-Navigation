@@ -1,27 +1,34 @@
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import { View, StyleSheet, FlatList, Text, TouchableOpacity } from "react-native";
 import { students } from "./StudentsDb"
+import { useNavigation } from "@react-navigation/native";
 
 export default function StudentList() {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <FlatList
                 data={students}
-                keyExtractor={item=>item.id}
-                renderItem={({ item }) => <Text style={styles.card}>{item.name}</Text>}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) =>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Profile")}>
+                        <Text style={styles.card}>{item.name}</Text>
+                    </TouchableOpacity>
+                }
             />
+
         </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      paddingTop: 22,
-      backgroundColor: '#fff',
+        flex: 1,
+        paddingTop: 22,
+        backgroundColor: '#fff',
     },
     item: {
-      padding: 10,
-      fontSize: 18,
-      height: 44,
+        padding: 10,
+        fontSize: 18,
+        height: 44,
     },
     card: {
         flexDirection: 'row',
@@ -35,4 +42,4 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 2,
     }
-  });
+});
